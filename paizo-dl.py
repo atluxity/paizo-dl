@@ -32,7 +32,7 @@ HEADERS = {
 
 # Cookies extracted from the curl command
 COOKIES = {
-    'sessionId': 'ChbbbbbcN40ysCxMNZZVw0',  # Replace with your actual sessionId from the browser
+    'sessionId': 'CHANGEME',  # Replace with your actual sessionId from the browser
     '_pk_id.1.638a': '156ac78b02e09b8e.1725558046.',
     '_pk_ses.1.638a': '1'
 }
