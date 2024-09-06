@@ -3,6 +3,7 @@ import time
 import os
 import argparse
 import zipfile
+import re
 from bs4 import BeautifulSoup
 
 # Define constants
@@ -32,10 +33,17 @@ HEADERS = {
 
 # Cookies extracted from the curl command
 COOKIES = {
-    'sessionId': 'CHANGEME',  # Replace with your actual sessionId from the browser
     '_pk_id.1.638a': '156ac78b02e09b8e.1725558046.',
     '_pk_ses.1.638a': '1'
 }
+
+def sanitize_name(name):
+    """Sanitize asset name to remove unwanted characters or messages."""
+    # Remove any non-alphanumeric characters, except for a few allowed ones
+    sanitized_name = re.sub(r'[^\w\s\(\)\-\.\,]', '', name)
+    # Remove any 'Personalizing...' messages or newlines
+    sanitized_name = re.sub(r'Personalizing.*$', '', sanitized_name).strip()
+    return sanitized_name
 
 def fetch_assets(session, debug=False):
     """Fetch the list of digital assets and their download packages from Paizo."""
@@ -74,6 +82,9 @@ def fetch_assets(session, debug=False):
             version_span = tbody.find('span', class_='tiny no-wrap')
             asset_version = version_span.text.strip() if version_span else "Unknown Format"
             asset_name_with_version = f"{asset_name} ({asset_version})"
+
+            # Sanitize asset name
+            asset_name_with_version = sanitize_name(asset_name_with_version)
 
             download_package = extract_download_package(tbody)  # Dynamically extract the correct download package
 
@@ -132,11 +143,15 @@ def download_asset(session, hex_id, download_package, asset_name, debug=False):
         content_type = response.headers.get('Content-Type', '')
         
         if response.status_code == 200:
-            # Determine the file extension based on the content type
+            # Determine the file extension based on the content type or name
             if 'application/pdf' in content_type:
                 file_extension = '.pdf'
             elif 'application/zip' in content_type or 'application/octet-stream' in content_type:
-                file_extension = '.zip'
+                # If the asset name contains "ePub", assume it's an EPUB file
+                if 'epub' in asset_name.lower():
+                    file_extension = '.epub'
+                else:
+                    file_extension = '.zip'
             elif 'html' in content_type:
                 print(f"Received HTML page instead of the file for {asset_name}. Retrying...")
                 retry_count += 1
@@ -227,4 +242,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
