@@ -15,15 +15,15 @@ This Python script allows you to automate the process of downloading digital ass
 ## Installation
 
 1. Clone the repository:
-    \`\`\`bash
+    ```bash
     git clone https://github.com/yourusername/paizo-dl.git
     cd paizo-dl
-    \`\`\`
+    ```
 
 2. Install the required Python packages:
-    \`\`\`bash
+    ```bash
     pip install -r requirements.txt
-    \`\`\`
+    ```
 
 ## Usage
 
@@ -31,25 +31,25 @@ This Python script allows you to automate the process of downloading digital ass
 
 To list all available digital assets on your Paizo account without downloading them:
 
-\`\`\`bash
+```bash
 python3 paizo-dl.py --list-assets
-\`\`\`
+```
 
 ### Downloading All Assets
 
 To download all available digital assets:
 
-\`\`\`bash
+```bash
 python3 paizo-dl.py
-\`\`\`
+```
 
 ### Debug Mode
 
 To enable debug output for more detailed information:
 
-\`\`\`bash
+```bash
 python3 paizo-dl.py --debug
-\`\`\`
+```
 
 ### Command Line Arguments
 
@@ -65,9 +65,9 @@ python3 paizo-dl.py --debug
 
 To install the dependencies:
 
-\`\`\`bash
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
 ## Configuration
 
@@ -115,8 +115,8 @@ This project is licensed under the MIT License.
 
 Here’s an example of running the script to download all assets:
 
-\`\`\`bash
+```bash
 python3 paizo-dl.py --debug
-\`\`\`
+```
 
 The script will handle personalization, download assets, and rename files to prevent overwrites.
